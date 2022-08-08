@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { Formik, Form } from 'formik';
 import Input from '@/components/Input';
@@ -29,21 +28,7 @@ const ListingForm = ({
   const [imageUrl, setImageUrl] = useState(initialValues?.image ?? '');
 
   const upload = async image => {
-    if (!image) return;
-
-    let toastId;
-    try {
-      setDisabled(true);
-      toastId = toast.loading('Uploading...');
-      const { data } = await axios.post('/api/image-upload', { image });
-      setImageUrl(data?.url);
-      toast.success('Successfully uploaded', { id: toastId });
-    } catch (e) {
-      toast.error('Unable to upload', { id: toastId });
-      setImageUrl('');
-    } finally {
-      setDisabled(false);
-    }
+    // TODO: Upload image to remote storage
   };
 
   const handleOnSubmit = async (values = null) => {

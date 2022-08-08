@@ -1,19 +1,9 @@
 import Layout from '@/components/Layout';
 import Grid from '@/components/Grid';
-import { prisma } from '@/lib/prisma';
 
-export async function getServerSideProps() {
-  // Get all homes
-  const homes = await prisma.home.findMany();
-  // Pass the data to the Home page
-  return {
-    props: {
-      homes: JSON.parse(JSON.stringify(homes)),
-    },
-  };
-}
+import homes from 'data.json';
 
-export default function Home({ homes = [] }) {
+export default function Home() {
   return (
     <Layout>
       <h1 className="text-xl font-medium text-gray-800">

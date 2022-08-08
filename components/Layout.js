@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import { useSession, signOut } from 'next-auth/react';
 import AuthModal from './AuthModal';
 import { Menu, Transition } from '@headlessui/react';
 import {
@@ -21,7 +20,7 @@ const menuItems = [
   {
     label: 'List a new home',
     icon: PlusIcon,
-    href: '/create',
+    href: '/list',
   },
   {
     label: 'My homes',
@@ -36,18 +35,17 @@ const menuItems = [
   {
     label: 'Logout',
     icon: LogoutIcon,
-    onClick: signOut,
+    onClick: () => null,
   },
 ];
 
 const Layout = ({ children = null }) => {
   const router = useRouter();
 
-  const { data: session, status } = useSession();
-  const user = session?.user;
-  const isLoadingUser = status === 'loading';
-
   const [showModal, setShowModal] = useState(false);
+
+  const user = null;
+  const isLoadingUser = false;
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -76,14 +74,11 @@ const Layout = ({ children = null }) => {
                 </a>
               </Link>
               <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => {
-                    session?.user ? router.push('/create') : openModal();
-                  }}
-                  className="hidden sm:block hover:bg-gray-200 transition px-3 py-1 rounded-md"
-                >
-                  List your home
-                </button>
+                <Link href="/create">
+                  <a className="hidden sm:block hover:bg-gray-200 transition px-3 py-1 rounded-md">
+                    List your home
+                  </a>
+                </Link>
                 {isLoadingUser ? (
                   <div className="h-8 w-[75px] bg-gray-200 animate-pulse rounded-md" />
                 ) : user ? (
