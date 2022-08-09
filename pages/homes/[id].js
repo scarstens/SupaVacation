@@ -72,6 +72,7 @@ const ListedHome = (home = null) => {
                 alt={home.title}
                 layout="fill"
                 objectFit="cover"
+                priority
               ></Image>
             ) : null}
           </div>
