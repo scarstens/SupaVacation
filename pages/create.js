@@ -5,7 +5,7 @@ import axios from "axios";
 const Create = () => {
   const addHome = (data) => {
     console.log("Submitting home...", data);
-    axios.post("/api/homes", data);
+    return axios.post("/api/homes", data);
   };
 
   return (
