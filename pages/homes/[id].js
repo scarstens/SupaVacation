@@ -3,10 +3,10 @@ import Layout from "@/components/Layout";
 import { PrismaClient } from "@prisma/client";
 import { useRouter } from "next/router";
 
-const db_prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 export async function getStaticPaths() {
-  const homes = await db_prisma.home.findMany({ select: { id: true } });
+  const homes = await prisma.home.findMany({ select: { id: true } });
   return {
     paths: homes.map((home) => ({ params: { id: home.id } })),
     fallback: true,
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const home = await db_prisma.home.findUnique({ where: { id: params.id } });
+  const home = await prisma.home.findUnique({ where: { id: params.id } });
   if (home) {
     return { props: JSON.parse(JSON.stringify(home)) };
   }

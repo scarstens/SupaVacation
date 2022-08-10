@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-const db_prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   // Create new home
@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     try {
       const { image, title, description, price, guests, beds, baths } =
         req.body;
-      const home = await db_prisma.home.create({
+      const home = await prisma.home.create({
         data: { image, title, description, price, guests, beds, baths },
       });
 
