@@ -18,7 +18,8 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_SERVER_USER,
     pass: process.env.EMAIL_SERVER_PASSWORD,
   },
-  // secure: process.env.EMAIL_SERVER_SSL === "true",
+  debug: process.env.EMAIL_SERVER_DEBUG === "true",
+  logger: process.env.EMAIL_SERVER_DEBUG === "true",
 });
 const sendVerificationRequest = ({ identifier, url }) => {
   const emailFile = readFileSync(path.join(emailsDir, "confirm-email.html"), {
