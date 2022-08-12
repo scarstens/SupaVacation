@@ -1,3 +1,4 @@
+// TODO: Lockdown endpoint using capabitilies.
 import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
