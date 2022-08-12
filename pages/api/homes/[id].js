@@ -1,12 +1,12 @@
-import { getSession } from 'next-auth/react';
-import { prisma } from '@/lib/prisma';
-import { supabase } from '@/lib/supabase';
+import { getSession } from "next-auth/react";
+import { prisma } from "@/lib/prisma";
+import { supabase } from "@/lib/supabase";
 
 export default async function handler(req, res) {
   // Check if user is authenticated
   const session = await getSession({ req });
   if (!session) {
-    return res.status(401).json({ message: 'Unauthorized.' });
+    return res.status(401).json({ message: "Unauthorized." });
   }
 
   // Retrieve the authenticated user
@@ -14,15 +14,16 @@ export default async function handler(req, res) {
     where: { email: session.user.email },
     select: { listedHomes: true },
   });
-
+  console.log("Session user has these homes", user.listedHomes);
   // Check if authenticated user is the owner of this home
   const { id } = req.query;
-  if (!user?.listedHomes?.find(home => home.id === id)) {
-    return res.status(401).json({ message: 'Unauthorized.' });
+  // TODO: Fix query to only return the 1 home instead of all homes.
+  if (!user?.listedHomes?.find((home) => home.id === id)) {
+    console.log("User is not allowed to edit this home.");
+    return res.status(401).json({ message: "Unauthorized." });
   }
-
   // Update home
-  if (req.method === 'PATCH') {
+  if (req.method === "PATCH") {
     try {
       const home = await prisma.home.update({
         where: { id },
@@ -30,9 +31,11 @@ export default async function handler(req, res) {
       });
       res.status(200).json(home);
     } catch (e) {
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ message: "Something went wrong" });
     }
-  } else if (req.method === 'DELETE') {
+  }
+  // Delete home
+  else if (req.method === "DELETE") {
     try {
       const home = await prisma.home.delete({
         where: { id },
@@ -44,12 +47,12 @@ export default async function handler(req, res) {
       }
       res.status(200).json(home);
     } catch (e) {
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
   // HTTP method not supported!
   else {
-    res.setHeader('Allow', ['PATCH', 'DELETE']);
+    res.setHeader("Allow", ["PATCH", "DELETE"]);
     res
       .status(405)
       .json({ message: `HTTP method ${req.method} is not supported.` });

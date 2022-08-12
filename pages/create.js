@@ -1,7 +1,7 @@
-import { getSession } from 'next-auth/react';
-import axios from 'axios';
-import Layout from '@/components/Layout';
-import ListingForm from '@/components/ListingForm';
+import Layout from "@/components/Layout";
+import ListingForm from "@/components/ListingForm";
+import axios from "axios";
+import { getSession } from "next-auth/react";
 
 export async function getServerSideProps(context) {
   // Check if user is authenticated
@@ -11,7 +11,7 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
@@ -23,7 +23,10 @@ export async function getServerSideProps(context) {
 }
 
 const Create = () => {
-  const addHome = data => axios.post('/api/homes', data);
+  const addHome = (data) => {
+    console.log("Submitting home...", data);
+    return axios.post("/api/homes", data);
+  };
 
   return (
     <Layout>
@@ -37,7 +40,7 @@ const Create = () => {
             buttonText="Add home"
             redirectPath="/"
             onSubmit={addHome}
-          />
+          ></ListingForm>
         </div>
       </div>
     </Layout>

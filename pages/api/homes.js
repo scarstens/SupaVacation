@@ -1,23 +1,22 @@
-import { getSession } from 'next-auth/react';
-import { prisma } from '@/lib/prisma';
+import { getSession } from "next-auth/react";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(req, res) {
-  // Check if user is authenticated
   const session = await getSession({ req });
+  console.log(session);
   if (!session) {
-    return res.status(401).json({ message: 'Unauthorized.' });
+    res.status(401).json({ error: "Unauthorized." });
   }
+  // Retrieve the current authenticated user
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
 
   // Create new home
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     try {
       const { image, title, description, price, guests, beds, baths } =
         req.body;
-
-      const user = await prisma.user.findUnique({
-        where: { email: session.user.email },
-      });
-
       const home = await prisma.home.create({
         data: {
           image,
@@ -30,14 +29,17 @@ export default async function handler(req, res) {
           ownerId: user.id,
         },
       });
-      res.status(200).json(home);
+
+      return res.status(200).json(home);
     } catch (e) {
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({
+        message: "Something went wrong on the server, please try again.",
+      });
     }
   }
   // HTTP method not supported!
   else {
-    res.setHeader('Allow', ['POST']);
+    res.setHeader("Allow", ["POST"]);
     res
       .status(405)
       .json({ message: `HTTP method ${req.method} is not supported.` });

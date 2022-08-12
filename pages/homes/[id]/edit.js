@@ -1,15 +1,17 @@
-import { getSession } from 'next-auth/react';
-import axios from 'axios';
-import Layout from '@/components/Layout';
-import ListingForm from '@/components/ListingForm';
-import { prisma } from '@/lib/prisma';
+// pages/homes/[id]/edit.js
+import Layout from "@/components/Layout";
+import ListingForm from "@/components/ListingForm";
+import axios from "axios";
+
+import { getSession } from "next-auth/react";
+import { prisma } from "@/lib/prisma";
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   const redirect = {
     redirect: {
-      destination: '/',
+      destination: "/",
       permanent: false,
     },
   };
@@ -27,19 +29,18 @@ export async function getServerSideProps(context) {
 
   // Check if authenticated user is the owner of this home
   const id = context.params.id;
-  const home = user?.listedHomes?.find(home => home.id === id);
+  const home = user?.listedHomes?.find((home) => home.id === id);
   if (!home) {
     return redirect;
   }
-
+  console.log("Found home for editing:", home);
   return {
     props: JSON.parse(JSON.stringify(home)),
   };
 }
 
 const Edit = (home = null) => {
-  const handleOnSubmit = data => axios.patch(`/api/homes/${home.id}`, data);
-
+  const handleOnSubmit = (data) => axios.patch(`/api/homes/${home.id}`, data);
   return (
     <Layout>
       <div className="max-w-screen-sm mx-auto">

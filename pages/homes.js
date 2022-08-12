@@ -1,7 +1,7 @@
-import { getSession } from 'next-auth/react';
-import Layout from '@/components/Layout';
-import Grid from '@/components/Grid';
-import { prisma } from '@/lib/prisma';
+import Layout from "@/components/Layout";
+import Grid from "@/components/Grid";
+import { getSession } from "next-auth/react";
+import { prisma } from "@/lib/prisma";
 
 export async function getServerSideProps(context) {
   // Check if user is authenticated
@@ -11,7 +11,7 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
@@ -20,7 +20,7 @@ export async function getServerSideProps(context) {
   // Get all homes from the authenticated user
   const homes = await prisma.home.findMany({
     where: { owner: { email: session.user.email } },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 
   // Pass the data to the Homes component

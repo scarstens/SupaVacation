@@ -1,11 +1,11 @@
-import Layout from '@/components/Layout';
-import Grid from '@/components/Grid';
-import { prisma } from '@/lib/prisma';
+import Layout from "@/components/Layout";
+import Grid from "@/components/Grid";
+import { prisma } from "@/lib/prisma";
+
+const db_prisma = prisma;
 
 export async function getServerSideProps() {
-  // Get all homes
-  const homes = await prisma.home.findMany();
-  // Pass the data to the Home page
+  const homes = await db_prisma.home.findMany();
   return {
     props: {
       homes: JSON.parse(JSON.stringify(homes)),
