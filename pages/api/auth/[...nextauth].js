@@ -9,6 +9,7 @@ import { readFileSync } from "fs";
 import path from "path";
 
 // Configure custom magic link emails
+// TODO: Do more testing with secure setting on nodemail transporter
 const emailsDir = path.resolve(process.cwd(), "emails");
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
@@ -17,7 +18,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_SERVER_USER,
     pass: process.env.EMAIL_SERVER_PASSWORD,
   },
-  secure: process.env.EMAIL_SERVER_SSL === "true",
+  // secure: process.env.EMAIL_SERVER_SSL === "true",
 });
 const sendVerificationRequest = ({ identifier, url }) => {
   const emailFile = readFileSync(path.join(emailsDir, "confirm-email.html"), {
