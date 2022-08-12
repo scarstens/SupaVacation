@@ -18,6 +18,8 @@ model Home {
   baths       Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id])
 }
 
 model Account {
@@ -57,6 +59,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  listedHomes   Home[]
 }
 
 model VerificationToken {

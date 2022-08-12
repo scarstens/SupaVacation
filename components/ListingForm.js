@@ -23,6 +23,7 @@ const ListingForm = ({
   buttonText = "Submit",
   onSubmit = () => null,
 }) => {
+  console.log("Submit handler is running...");
   const router = useRouter();
 
   const [disabled, setDisabled] = useState(false);
