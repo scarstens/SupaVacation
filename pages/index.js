@@ -1,8 +1,8 @@
 import Layout from "@/components/Layout";
 import Grid from "@/components/Grid";
-import { prisma, PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
-const db_prisma = new PrismaClient();
+const db_prisma = prisma;
 
 export async function getServerSideProps() {
   const homes = await db_prisma.home.findMany();

@@ -1,14 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { prisma } from "@/lib/prisma";
 
 import Image from "next/image";
 import Layout from "@/components/Layout";
 import toast from "react-hot-toast";
 import axios from "axios";
-
-const prisma = new PrismaClient();
 
 export async function getStaticPaths() {
   const homes = await prisma.home.findMany({ select: { id: true } });
